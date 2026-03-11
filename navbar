@@ -1,0 +1,13 @@
+import React from "react";
+import NotificationBell from "./NotificationBell";
+
+const Navbar = () => {
+  return (
+    <div className="navbar">
+      <h2>Notification System</h2>
+      <NotificationBell />
+    </div>
+  );
+};
+
+export default Navbar;
