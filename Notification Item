@@ -1,0 +1,27 @@
+import React, { useContext } from "react";
+import { NotificationContext } from "../context/NotificationContext";
+
+const NotificationItem = ({ notification }) => {
+
+  const { markAsRead, markAsUnread } = useContext(NotificationContext);
+
+  return (
+    <div className={notification.read ? "item read" : "item unread"}>
+
+      <p>{notification.message}</p>
+
+      {notification.read ? (
+        <button onClick={() => markAsUnread(notification.id)}>
+          Mark Unread
+        </button>
+      ) : (
+        <button onClick={() => markAsRead(notification.id)}>
+          Mark Read
+        </button>
+      )}
+
+    </div>
+  );
+};
+
+export default NotificationItem;
