@@ -1,0 +1,27 @@
+import React, { useContext, useState } from "react";
+import { NotificationContext } from "../context/NotificationContext";
+import { FaBell } from "react-icons/fa";
+import NotificationList from "./NotificationList";
+
+const NotificationBell = () => {
+
+  const { notifications } = useContext(NotificationContext);
+  const [open, setOpen] = useState(false);
+
+  const unread = notifications.filter(n => !n.read).length;
+
+  return (
+    <div className="bell">
+
+      <div onClick={() => setOpen(!open)} className="icon">
+        <FaBell size={22} />
+        {unread > 0 && <span className="badge">{unread}</span>}
+      </div>
+
+      {open && <NotificationList />}
+
+    </div>
+  );
+};
+
+export default NotificationBell;
