@@ -1,0 +1,59 @@
+import React, { createContext, useState, useEffect } from "react";
+
+export const NotificationContext = createContext();
+
+export const NotificationProvider = ({ children }) => {
+
+  const [notifications, setNotifications] = useState(() => {
+    const saved = localStorage.getItem("notifications");
+    return saved
+      ? JSON.parse(saved)
+      : [
+          { id: 1, message: "Welcome to the notification system", read: false },
+          { id: 2, message: "Your profile was updated", read: false },
+          { id: 3, message: "New system alert available", read: true }
+        ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("notifications", JSON.stringify(notifications));
+  }, [notifications]);
+
+  const markAsRead = (id) => {
+    setNotifications(
+      notifications.map((n) =>
+        n.id === id ? { ...n, read: true } : n
+      )
+    );
+  };
+
+  const markAsUnread = (id) => {
+    setNotifications(
+      notifications.map((n) =>
+        n.id === id ? { ...n, read: false } : n
+      )
+    );
+  };
+
+  const addNotification = (message) => {
+    const newNotification = {
+      id: Date.now(),
+      message,
+      read: false
+    };
+    setNotifications([newNotification, ...notifications]);
+  };
+
+  return (
+    <NotificationContext.Provider
+      value={{
+        notifications,
+        markAsRead,
+        markAsUnread,
+        addNotification
+      }}
+    >
+      {children}
+    </NotificationContext.Provider>
+  );
+};
